@@ -8,6 +8,11 @@ import biz.shujutech.db.object.ObjectBase;
 import biz.shujutech.db.relational.BaseDb;
 import biz.shujutech.db.relational.FieldType;
 import biz.shujutech.reflect.ReflectField;
+import com.pccw.telco.crm.util.JsonProcessor;
+import com.pccw.ui.Panel;
+import com.pccw.ui.Widget;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CustomerAttrib extends Clasz {
 	@ReflectField(type=FieldType.STRING, size=32, displayPosition=5) public static String Label;
@@ -18,12 +23,31 @@ public class CustomerAttrib extends Clasz {
 	@ReflectField(type=FieldType.BOOLEAN, displayPosition=30) public static String Visible;
 
 
+	public void setLabel(String aValue) throws Exception {
+		this.setValueStr(Label, aValue);
+	}
 
+	public void setDescription(String aValue) throws Exception {
+		this.setValueStr(Description, aValue);
+	}
 
+	public void setWidgetType(Widget aValue) throws Exception {
+		this.setValueObject(WidgetType, aValue);
+	}
 
+	public void setFormPanel(Panel aValue) throws Exception {
+		this.setValueObject(FormPanel, aValue);
+	}
 
+	public void setMandatory(boolean aValue) throws Exception {
+		this.setValueBoolean(Mandatory, aValue);
+	}
 
-	public static final String PROPERTY_LOCATION_APP = "C:\\Users\\USER4\\pccw\\crm-ddl\\Model\\src\\com\\pccw\\telco\\crm\\core\\telco-core.properties";
+	public void setVisible(boolean aValue) throws Exception {
+		this.setValueBoolean(Visible, aValue);
+	}
+
+	public static final String PROPERTY_LOCATION_APP = "C:\\Users\\User8\\github\\telco-model\\Model\\src\\com\\pccw\\telco\\crm\\config\\telco.properties";
 	public static void main(String[] args) throws Exception {
 		ObjectBase objectDb = new ObjectBase();
 		Connection conn = null;
@@ -33,17 +57,12 @@ public class CustomerAttrib extends Clasz {
 			objectDb.setupDb();
 			conn = objectDb.getConnPool().getConnection();
 
-			String INIT_SCHEMA = "INIT_SCHEMA";
-			String CREATE_MODEL = "CREATE_MODEL";
+			InitList(conn);
 
-			String actionType = INIT_SCHEMA;
-
-			if (actionType.equals(INIT_SCHEMA)) {
-
-				CustomerAttrib customerAttrib;
-				customerAttrib = (CustomerAttrib) ObjectBase.CreateObject(conn, CustomerAttrib.class);
+			//CustomerAttrib customerAttrib;
+			//customerAttrib = (CustomerAttrib) ObjectBase.CreateObject(conn, CustomerAttrib.class);
+			PopulateAttrib(conn);
 				
-			}
 
 		} catch (Exception ex) {
 			App.logEror(new Hinderance(ex, "Application encounter fatal error, application is aborting...."));
@@ -54,5 +73,70 @@ public class CustomerAttrib extends Clasz {
 		}		
 	}
 
-	
+	public static void InitList(Connection aConn) throws Exception {
+		Widget.InitList(aConn);
+		CustomerPanel.InitList(aConn);
+	}
+
+	public static void PopulateAttrib(Connection aConn) throws Exception {
+		List<String> allRow = new CopyOnWriteArrayList<String>();
+		allRow.add("Title,Salutation,Drop Down,Customer,Y,Y");
+		allRow.add("First Name,First Name,Text Field,Customer,Y,Y");
+		allRow.add("Last Name,Last Name,Text Field,Customer,Y,Y");
+		allRow.add("Registered Mobile Number,Main registered mobile number registered to the telco company,Number,Customer,Y,Y");
+		allRow.add("Country Code,Country code of phone number,Drop Down,Contact,Y,Y");
+		allRow.add("UEN,Customer identification card number,Text Field,Customer,Y,Y");
+		allRow.add("Customer Type,Customer Type,Drop Down,Customer,Y,Y");
+		allRow.add("Preferred Contact Method,Preferred Contact Method,Tickbox,Contact,N,Y");
+		allRow.add("Contact Type,List from contact type,Drop Down,Contact,N,Y");
+		allRow.add("Contact Number,Contact Number,Number,Contact,N,Y");
+		allRow.add("Email Address,Email Address,Text Field,Contact,N,Y");
+		allRow.add("Address Type,Address Type,Drop Down,Address,Y,Y");
+		allRow.add("Address Line 1,Address Line 1,Text Field,Address,Y,Y");
+		allRow.add("Address Line 2,Address Line 2,Text Field,Address,N,Y");
+		allRow.add("Postcode,Postcode,Number,Address,Y,Y");
+
+		for(String eachStrRow : allRow) {
+			String[] allField = eachStrRow.split(",");
+			int colIdx = 0;
+			CustomerAttrib eachRow = (CustomerAttrib) ObjectBase.CreateObject(aConn, CustomerAttrib.class);
+			eachRow.setLabel(allField[colIdx++]);
+			eachRow.setDescription(allField[colIdx++]);
+			eachRow.setWidgetType(Str2Widget(allField[colIdx++]));
+			eachRow.setFormPanel(Str2Panel(allField[colIdx++]));
+			eachRow.setMandatory(Str2Bool(allField[colIdx++]));
+			eachRow.setVisible(Str2Bool(allField[colIdx++]));
+
+			//eachRow.persistCommit(aConn);
+			String strRow = JsonProcessor.Object2Json(aConn, eachRow);
+			System.out.println(strRow);
+		}
+	}
+
+	public static boolean Str2Bool(String aValue) {
+		if (aValue.toLowerCase().trim().equals("y")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static CustomerPanel Str2Panel(String aValue) throws Exception {
+		CustomerPanel result = null;
+		if (aValue.toLowerCase().trim().startsWith(CustomerPanel.CustomerDescr.toLowerCase())) {
+			result = CustomerPanel.Customer;
+		} else if (aValue.toLowerCase().trim().startsWith(CustomerPanel.ContactDescr.toLowerCase())) {
+			result = CustomerPanel.Contact;
+		} else if (aValue.toLowerCase().trim().startsWith(CustomerPanel.AddressDescr.toLowerCase())) {
+			result = CustomerPanel.Address;
+		} else {
+			result = null;
+		}
+		return(result);
+	}
+
+	public static Widget Str2Widget(String aValue) throws Exception {
+		Widget result = null;
+		return(result);
+	}
 }

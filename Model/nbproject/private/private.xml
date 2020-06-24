@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="PCCW">
-            <file>file:/C:/Users/USER4/pccw/crm-ddl/Model/src/com/pccw/telco/crm/core/Customer.java</file>
-            <file>file:/C:/Users/USER4/pccw/crm-ddl/Model/src/com/pccw/telco/crm/core/CustomerGotAddr.java</file>
-            <file>file:/C:/Users/USER4/pccw/crm-ddl/Model/src/com/pccw/telco/crm/core/CustomerGotType.java</file>
-            <file>file:/C:/Users/USER4/pccw/crm-ddl/Model/src/com/pccw/telco/crm/core/CustomerGotContact.java</file>
+            <file>file:/C:/Users/User8/github/telco-model/Model/src/com/pccw/ui/Panel.java</file>
+            <file>file:/C:/Users/User8/github/telco-model/Model/src/com/pccw/telco/crm/core/CustomerPanel.java</file>
+            <file>file:/C:/Users/User8/github/telco-model/Model/src/com/pccw/telco/crm/core/Customer.java</file>
+            <file>file:/C:/Users/User8/github/telco-model/Model/src/com/pccw/telco/crm/core/CustomerAttrib.java</file>
+            <file>file:/C:/Users/User8/github/telco-model/Model/src/com/pccw/ui/Widget.java</file>
         </group>
     </open-files>
 </project-private>

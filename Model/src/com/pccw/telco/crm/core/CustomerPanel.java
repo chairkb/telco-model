@@ -11,7 +11,7 @@ import biz.shujutech.reflect.ReflectIndex;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CustomerPanel extends Panel implements Lookup {
-	@ReflectField(type=FieldType.STRING, size=32, indexes={@ReflectIndex(indexName="idx_usrstatus_descr", indexNo=0, indexOrder=SortOrder.ASC, isUnique=true)}) public static String Descr;  
+	@ReflectField(type=FieldType.STRING, size=32, indexes={@ReflectIndex(indexName="idx_custpanel_descr", indexNo=0, indexOrder=SortOrder.ASC, isUnique=true)}) public static String Descr;  
 
 	public static CopyOnWriteArrayList<Lookup> LookupList = new CopyOnWriteArrayList<>();
 
@@ -53,8 +53,8 @@ public class CustomerPanel extends Panel implements Lookup {
 		ObjectBase.CreateObject(aConn, CustomerPanel.class); // check if table already exist, if not create it
 		Lookup.ClearAndLoadList(aConn, CustomerPanel.class, LookupList);
 		Customer = (CustomerPanel) Lookup.InsertDefaultList(aConn, Customer, CustomerPanel.class, CustomerDescr, LookupList);
-		Contact = (CustomerPanel) Lookup.InsertDefaultList(aConn, Contact, Customer.class, ContactDescr, LookupList);
-		Address = (CustomerPanel) Lookup.InsertDefaultList(aConn, Address, Customer.class, AddressDescr, LookupList);
+		Contact = (CustomerPanel) Lookup.InsertDefaultList(aConn, Contact, CustomerPanel.class, ContactDescr, LookupList);
+		Address = (CustomerPanel) Lookup.InsertDefaultList(aConn, Address, CustomerPanel.class, AddressDescr, LookupList);
 	}
 	
 }
