@@ -1,0 +1,94 @@
+Malaysia|Wilayah Perseketuan|State|20170101|New Year
+Malaysia|Penang|State|20170101|New Year
+Malaysia|Sarawak|State|20170101|New Year
+Malaysia|Selangor|State|20170101|New Year
+Malaysia|Negeri Sembilan|State|20170101|New Year
+Malaysia|Melaka|State|20170101|New Year
+Malaysia|Pahang|State|20170101|New Year
+Malaysia|Sabah|State|20170101|New Year
+Malaysia|Perak|State|20170101|New Year
+Malaysia|Putrajaya|State|20170101|New Year
+Malaysia|Labuan|State|20170101|New Year
+Malaysia|Sembilan|State|20170114|Yang di-Pertuan Besar Negeri Sembilan's Birthday
+Malaysia|Kedah|State|20170115|Sultan of Kedah's Birthday
+Malaysia|National|National|20170128|Chinese New Year
+Malaysia|National|National|20170129|Chinese New Year (2nd Day)
+Malaysia|Perseketuan|State|20170201|Federal Territory Day
+Malaysia|Perseketuan|State|20170201|Federal Territory Day
+Malaysia|Labuan|State|20170201|Federal Territory Day
+Malaysia|Putrajaya|State|20170201|Federal Territory Day
+Malaysia|Perseketuan|State|20170209|Thaipusam
+Malaysia|Putrajaya|State|20170209|Thaipusam
+Malaysia|Johor|State|20170209|Thaipusam
+Malaysia|Kedah|State|20170209|Thaipusam
+Malaysia|Sembilan|State|20170209|Thaipusam
+Malaysia|Perak|State|20170209|Thaipusam
+Malaysia|Penang|State|20170209|Thaipusam
+Malaysia|Selangor|State|20170209|Thaipusam
+Malaysia|Terengganu|State|20170304|Anniversary of Installation of Sultan of Terengganu
+Malaysia|Johor|State|20170323|Sultan of Johor's Birthday
+Malaysia|Sabah|State|20170414|Good Friday
+Malaysia|Sarawak|State|20170414|Good Friday
+Malaysia|Kedah|State|20170424|Israk & Mikraj
+Malaysia|Sembilan|State|20170424|Israk & Mikraj
+Malaysia|Perlis|State|20170424|Israk & Mikraj
+Malaysia|Terengganu|State|20170426|Sultan of Terengganu's Birthday
+Malaysia|National|National|20170501|Labour Day
+Malaysia|Pahang|State|20170507|Hari Hol Pahang
+Malaysia|National|National|20170510|Vesak Day
+Malaysia|Perlis|State|20170517|Raja Perlis' Birthday
+Malaysia|Johor|State|20170527|Awal Ramadan
+Malaysia|Kedah|State|20170527|Awal Ramadan
+Malaysia|Sabah|State|20170530|Harvest Festival
+Malaysia|Labuan|State|20170530|Harvest Festival
+Malaysia|Sabah|State|20170531|Harvest Festival
+Malaysia|Labuan|State|20170531|Harvest Festival
+Malaysia|Sarawak|State|20170601|Hari Gawai
+Malaysia|Sarawak|State|20170602|Hari Gawai
+Malaysia|National|National|20170603|Yang Dipertuan Agong's Birthday
+Malaysia|Kelantan|State|20170612|Nuzul Al-Quran
+Malaysia|Pahang|State|20170612|Nuzul Al-Quran
+Malaysia|Perak|State|20170612|Nuzul Al-Quran
+Malaysia|Perlis|State|20170612|Nuzul Al-Quran
+Malaysia|Penang|State|20170612|Nuzul Al-Quran
+Malaysia|Selangor|State|20170612|Nuzul Al-Quran
+Malaysia|Terengganu|State|20170612|Nuzul Al-Quran
+Malaysia|Putrajaya|State|20170612|Nuzul Al-Quran
+Malaysia|National|National|20170625|Hari Raya Puasa
+Malaysia|National|National|20170626|Hari Raya Puasa
+Malaysia|Penang|State|20170707|Georgetown World Heritage City Day
+Malaysia|Penang|State|20170708|Penang Governor's Birthday
+Malaysia|Sarawak|State|20170722|Sarawak Independence Day
+Malaysia|National|National|20170831|National Day
+Malaysia|National|National|20170901|Hari Raya Haji
+Malaysia|Kedah|State|20170902|Hari Raya Haji (2nd Day)
+Malaysia|Kelantan|State|20170902|Hari Raya Haji (2nd Day)
+Malaysia|Perlis|State|20170902|Hari Raya Haji (2nd Day)
+Malaysia|Terengganu|State|20170902|Hari Raya Haji (2nd Day)
+Malaysia|Sarawak|State|20170909|Sarawak Governor's Birthday
+Malaysia|National|National|20170916|Malaysia Day
+Malaysia|National|National|20170921|Awal Muharram (Maal Hijrah)
+Malaysia|Sabah|State|20171007|Sabah Governor's Birthday
+Malaysia|Wilayah Perseketuan|State|20171018|Deepavali
+Malaysia|Penang|State|20171018|Deepavali
+Malaysia|Selangor|State|20171018|Deepavali
+Malaysia|Negeri Sembilan|State|20171018|Deepavali
+Malaysia|Melaka|State|20171018|Deepavali
+Malaysia|Pahang|State|20171018|Deepavali
+Malaysia|Johor|State|20171018|Deepavali
+Malaysia|Terengganu|State|20171018|Deepavali
+Malaysia|Sabah|State|20171018|Deepavali
+Malaysia|Perak|State|20171018|Deepavali
+Malaysia|Perlis|State|20171018|Deepavali
+Malaysia|Kedah|State|20171018|Deepavali
+Malaysia|Kelantan|State|20171018|Deepavali
+Malaysia|Putrajaya|State|20171018|Deepavali
+Malaysia|Labuan|State|20171018|Deepavali
+Malaysia|Pahang|State|20171024|Sultan of Pahang's Birthday
+Malaysia|Johor|State|20171026|Hari Hol Almarhum Sultan Iskandar
+Malaysia|Perak|State|20171103|Sultan of Perak's Birthday
+Malaysia|Kelantan|State|20171111|Sultan of Kelantan's Birthday
+Malaysia|Kelantan|State|20171112|Sultan of Kelantan's Birthday
+Malaysia|National|National|20171201|Prophet Muhammad's Birthday (Maulidur Rasul)
+Malaysia|Selangor|State|20171211|Sultan of Selangor's Birthday
+Malaysia|National|National|20171225|Christmas

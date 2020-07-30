@@ -5,8 +5,7 @@ import biz.shujutech.base.Base;
 import biz.shujutech.base.ConnectionPool;
 
 public class BaseDb extends Base {
-	//public static final String PROPERTY_LOCATION_APP = "C:\\Shujutech\\StApp\\StEMS\\web\\WEB-INF\\config\\shujutechapp.properties";
-	public static final String PROPERTY_LOCATION_APP = "C:\\Users\\USER4\\git\\StApp\\StEMS\\web\\WEB-INF\\config\\shujutechapp.properties";
+	public static final String PROPERTY_LOCATION_APP = "C:\\Shujutech\\StApp\\StEMS\\web\\WEB-INF\\config\\shujutechapp.properties";
 
 	public ConnectionPool connPool = null; // connection pool
 	public String jdbcDriver = "com.mysql.jdbc.Driver";

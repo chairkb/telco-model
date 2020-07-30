@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Payslip</title>
+			<style type="text/css">
+				@page {
+					margin: 3%;
+					size: A4 portrait;
+				}
+				html {
+					font-size: 14px;
+				}
+				body {
+					margin: 0;
+					font-family: monospace;
+				}
+				#PayslipAdhc { 
+					font-size: 1em;
+					color: #555555;
+				}
+				#PayslipForm {
+					font-family: monospace;
+				}
+				table.stdGrid thead {
+					width: 100%;
+					display: table;
+				}
+				table.stdGrid tr {
+					width: 100%;
+					table-layout: fixed;
+					display: table;
+					border-top: 1px solid #a6a6a7;
+				}
+					table.stdGrid tbody {
+					font-size: 15px;
+					font-family: monospace;
+					max-height: none;
+					display: block;
+				}
+				label {
+					font-weight: 500;
+				}
+				input[type='checkbox'] {
+					min-width: 0;
+				}
+				#divEmpInfo .st-eachfield.st-row {
+					margin-right: 1.2em !important;
+					margin-top: 1em;
+				}
+				.column-text {
+					float: left;
+					width: 48%;
+					position: relative;
+					min-height: 1px;
+					padding-left: 160px;
+				}
+				.column-grid {
+					float: left;
+					width: 50%;
+					position: relative;
+					min-height: 1px;
+					padding-right: 0px;
+					padding-left: 15px;
+				}
+				.column-line {
+					float: left;
+					width: 100%;
+					position: relative;
+					min-height: 1px;
+					padding-right: 35px;
+					padding-left: 35px;
+					margin-top:0px;
+					margin-bottom:0px;
+				}
+				#divEmpInfo, #divPayslip {
+					border: none;
+					float: left;
+				}
+				@media print {
+				body {
+					visibility: hidden;
+					background-image: none !important;
+				}
+				#divPayslipFull, #divPayslipFull * {
+					visibility: visible;
+					font-size: 12px;
+				}
+				table tr th.boolean {
+					display: none;
+				}
+				table tr td.boolean {
+					display: none;
+				}
+				.st-crud-menu {
+					display: none;
+				}
+				#divPayslipFull {
+					position: absolute;
+					left: 0;
+					top: 0;
+					margin-top: 50px;
+				}
+				#mth-period-popup {
+					display: none;
+				}
+				}
+				.st-fs01 {
+					border: none;
+				}
+				.fs-btn {
+					width:100%;
+					border: none; 
+					text-align: right; 
+					color: black; 
+					font-size:13px; 
+					float:left;
+					margin-top: 5px;
+					padding-right: 5px;
+					padding-bottom: 0px;
+					padding-top: 0px;
+				}
+				.st-eachfield.st-row {
+					margin-top: 5px;
+				}
+				.value-area {
+					border-bottom: 1px solid #F0F0F0;
+					width: 170px;
+				}
+				.each-body {
+					float: left;
+					display: block;
+					width: 90%;
+					margin-left: 4%;
+					margin-top: 0px;
+					padding-top: 10px;
+				}
+				#divFlipEmpInfo, #divFlipSlip {
+					color: #555555;
+					font-weight: 300;
+					letter-spacing: 0.1em;
+				}
+				.st-label-area {
+					display:inline-block;
+					margin-right: 10px;
+				}
+				#divPayslip input {
+					border: 0;
+					background: transparent;
+					border-bottom: 1px solid;
+					border-radius: 0;
+				}
+				.btn {
+					padding: 10px 40px;
+					font-size: 16px;
+					line-height: 1.33;
+					border-radius: 4px;
+					color: #fff;
+					background-color: rgb(191,1,54);
+					border-color: #d67118;
+					text-decoration: none;
+					font-weight: 700;
+				}
+				.st-eachfield.st-row.st-vertical-row {
+					width: 100%;
+					margin: 0;
+					padding: 5px;
+				}
+				.st-eachfield.st-row.st-vertical-row .st-label-area {
+					text-align: right;
+				}
+				.st-input-area {
+					display:inline-block;
+				}
+				table.stdGrid {
+					border-collapse: collapse;
+					border: 1px solid #CCB;
+					width: 100%;
+					height: 302px;
+				}
+				table.stdGrid th {
+					background: #CECECF;
+					text-align: left;
+					font-size: 14px;
+					padding-top: 1px;
+					padding-bottom: 1px;
+				}
+				table.stdGrid td, table.stdGrid th {
+					padding: 5px;
+					border: 1px solid #E0E0E0;
+				}
+				.cell-currency {
+					width: 30%;
+					text-align: right;
+				}
+				.table-cell {
+				}
+      </style>
+	</head>
+	<body>
+		<div id="PayslipForm" style="display: table; height: 100%; width: 100%; padding-top: 0px;">
+			<div style="display: table-row; height: 75%;">
+				<div id="body_payslip" class="each-body">
+					<div id="divPayslip" style="display: block; width: 100%;">
+						<div id="divPayslipFull" style="float: left; width: 100%;">
+
+							<div id="divPayslipInfo" style="float: left; width: 100%; margin-top: 20px">
+								<div style="text-align: center;">
+									<div class="" style="display: inline-block;">
+										<div class="st-eachfield st-row">
+											<div class="st-label-area">
+												<label>Company</label>
+											</div>
+											<div class="st-input-area">
+												<div id="wt_companyName" class="value-area" style="text-align: center; width: 260px"></div>
+											</div>
+										</div>
+									</div>
+									<br />
+									<div class="" style="display: inline-block;">
+										<div class="st-eachfield st-row" style="float: left;">
+											<div class="st-label-area">
+												<label>Period From</label>
+											</div>
+											<div class="st-input-area">
+												<div id="wt_payslipPeriodFrom" class="value-area" style="text-align: center;"></div>
+											</div>
+										</div>
+										<div class="st-eachfield st-row" style="float: left;">
+											<div class="st-label-area" style="margin-left: 50px;">
+												<label>Period To</label>
+											</div>
+											<div class="st-input-area">
+												<div id="wt_payslipPeriodTo" class="value-area" style="text-align: center;"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div style="width: 100%; float: left;">
+									<div id="divEmployeeDetail" style="margin-top: 25px; margin-bottom: 10px; float: left; width: 90%; display: block; margin-left: 5%;">
+										<div style="display: inline-block; width: 100%;">
+											<div style="display: inline-block; width: 45%; float: left;">
+												<div class="st-eachfield st-row">
+													<div class="st-label-area">
+														<label>Employee</label>
+													</div>
+													<div class="st-input-area">
+														<div id="wt_workerName" class="value-area"></div>
+													</div>
+												</div>
+											</div>
+											<div style="display: inline-block; text-align: right; float: right;">
+												<div class="st-eachfield st-row">
+													<div class="st-label-area">
+														<label>Gross Pay</label>
+													</div>
+													<div class="st-input-area">
+														<div id="wt_grossPay" class="value-area" style="text-align: right;">MYR 0.00</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div style="display: inline-block; width: 100%;">
+											<div style="display: inline-block; float: left; width: 45%;">
+												<div class="st-eachfield st-row">
+													<div class="st-label-area">
+														<label>Designation</label>
+													</div>
+													<div class="st-input-area">
+														<div id="wt_workerDesignation" class="value-area"></div>
+													</div>
+												</div>
+											</div>
+											<div style="display: inline-block; text-align: right; float: right;">
+												<div class="st-eachfield st-row">
+													<div class="st-label-area">
+														<label>Total Deduction</label>
+													</div>
+													<div class="st-input-area">
+														<div id="wt_totalDeduction" style="text-align: right;" class="value-area"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div style="display: inline-block; width: 100%;">
+											<div style="display: inline-block;">
+												<div class="st-eachfield st-row">
+													<div class="st-label-area">
+														<label>Net Pay</label>
+													</div>
+													<div class="st-input-area">
+														<div id="wt_totalNetPay" style="text-align: right;" class="value-area"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div id="divPayslipTable" style="float: left; width: 100%; margin-left: 2%; margin-top: 10px;">
+								<div style="float: left; display: table; width: 100%; border-spacing: 20px;">
+									<div style="display: table-row; width: 100%;">
+										<div id="divMasterEarn" style="display: table-cell; width: 50%;">
+											<div id="divEarning">
+												<table class="stdGrid" id="wt_tblEarnings">
+													<thead>
+															<tr>
+																	<th class="table-cell" data-title="Earnings">Earnings</th>
+																	<th class="table-cell cell-currency" data-title="Amount">Amount</th>
+															</tr>
+													</thead>
+													<tbody>
+															<tr id="wt_trxEarnings_0" class="wt_clsEarnings">
+																	<td class="table-cell" data-title="Earnings" id="wt_Earningsbracketo0bracketcdotDescr">Basic Salary</td>
+																	<td class="table-cell cell-currency" data-title="Amount" id="wt_Earningsbracketo0bracketcdotAmount">MYR 0.00</td>
+															</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<div id="divMasterDeduct" style="display: table-cell;">
+											<div id="divDeduction">
+												<table class="stdGrid" id="wt_tblDeductions">
+													<thead>
+															<tr>
+																	<th class="table-cell" data-title="Deductions">Deductions</th>
+																	<th class="table-cell cell-currency" data-title="Amount">Amount</th>
+															</tr>
+													</thead>
+													<tbody></tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									<div style="display: table-row;">
+										<div style="display: table-cell;"></div>
+										<div style="display: table-cell;">
+											<div id="divMasterOther">
+												<div id="divOther">
+													<table class="stdGrid" id="wt_tblOthers">
+														<thead>
+															<tr>
+																<th class="table-cell" data-title="Others">Others</th>
+																<th class="table-cell cell-currency" data-title="Amount">Amount</th>
+															</tr>
+														</thead>
+														<tbody></tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+

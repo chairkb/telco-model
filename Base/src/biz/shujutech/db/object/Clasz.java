@@ -23,6 +23,7 @@ import biz.shujutech.db.relational.Table;
 import biz.shujutech.reflect.AttribField;
 import biz.shujutech.reflect.AttribIndex;
 import biz.shujutech.reflect.ReflectIndex;
+import biz.shujutech.technical.LambdaObject;
 import biz.shujutech.technical.ResultSetFetch;
 import java.lang.reflect.Modifier;
 import java.sql.PreparedStatement;
@@ -642,6 +643,16 @@ public class Clasz extends Table implements Comparable {
 		}
 	}
 
+	public void markAllFieldForRemoval() throws Exception {
+		for(Field eachField : this.getClaszField().values()) {
+			if (eachField.isSystemField() == false) {
+				if (eachField.forRemove()) {
+					eachField.forRemove(true);
+				}
+			}
+		}
+	}
+
 	public boolean gotFieldDeleted() throws Exception {
 		boolean result = false;
 		if (this.gotDeletedField == false) {
@@ -880,7 +891,8 @@ public class Clasz extends Table implements Comparable {
 		return FetchUnique(aConn, aClasz, keyField, keyValue, aWhere, aDisplayOrder);
 	}
 
-	public static Clasz FetchUnique(Connection aConn, Clasz aClasz, List<String> aKeyField, List<String> aKeyValue, Record aWhere, SortOrder aDisplayOrder) throws Exception {
+	@Deprecated
+	private static Clasz FetchUnique(Connection aConn, Clasz aClasz, List<String> aKeyField, List<String> aKeyValue, Record aWhere, SortOrder aDisplayOrder) throws Exception {
 		FieldObjectBox fob = new FieldObjectBox(aClasz);
 		FetchStatus status = Clasz.FetchBySection(aConn, aClasz, aKeyField, aKeyValue, aWhere, fob, SortOrder.DSC, "next", 1);
 		fob.setFetchStatus(status);
@@ -892,6 +904,7 @@ public class Clasz extends Table implements Comparable {
 		return(null);
 	}
 
+	// replaced with FetchByPageFromTable
 	@Deprecated
 	public static FetchStatus FetchBySection(Connection aConn, Clasz aClasz, List<String> aKeyField, List<String> aKeyValue, Record aWhere, FieldObjectBox aBox, SortOrder aDisplayOrder, String aPageDirection, int aPageSize) throws Exception {
 		int result = 0;
@@ -2751,6 +2764,8 @@ public class Clasz extends Table implements Comparable {
 		resultSetFetch.forEachFetch(aConn, aClass, aSqlToGetObjId, aPositionalParamValue, aCallback);
 	}
 
+	/*
+	@Deprecated
 	public void fetchLatest(Connection aConn, String aBoxName, String aFieldLatest) throws Exception {
 		this.getFieldObjectBox(aBoxName).fetchAll(aConn);
 		this.getFieldObjectBox(aBoxName).resetIterator();
@@ -2775,13 +2790,53 @@ public class Clasz extends Table implements Comparable {
 					}
 				}
 			}
+
 		}
 		if (latestClasz != null) {
 			this.getFieldObjectBox(aBoxName).removeAll();
 			this.getFieldObjectBox(aBoxName).addValueObject(latestClasz);
 		}
 	}
+	*/
 
+	public void fetchLatestMemberFromFob(Connection aConn, String aBoxName, String aLatestField) throws Exception {
+		LambdaObject lambdaObject = new LambdaObject();
+		final String fieldLatest = aLatestField;
+		this.getFieldObjectBox(aBoxName).forEachMember(aConn, (Connection bConn, Clasz aClasz) -> {
+			Clasz currentClasz = aClasz;
+			Clasz latestClasz = (Clasz) lambdaObject.getTheObject();
+			if (latestClasz == null) {
+				lambdaObject.setTheObject(currentClasz);
+			} else {
+				try {
+					if (latestClasz.getField(fieldLatest) != null) {
+						DateTime latestDate;
+						DateTime currentDate;
+						if (latestClasz.getField(fieldLatest) instanceof FieldDateTime) {
+							latestDate = latestClasz.getValueDateTime(fieldLatest);	
+							currentDate = currentClasz.getValueDateTime(fieldLatest);
+						} else {
+							latestDate = latestClasz.getValueDate(fieldLatest);	
+							currentDate = currentClasz.getValueDate(fieldLatest);
+						}
+						if (latestDate.isBefore(currentDate)) {
+							lambdaObject.setTheObject(currentClasz);
+						}
+					}
+				} catch(Exception ex) {
+					App.logEror(ex, "Fail, exception thrown in Clasz.fetchLatest method.");
+					return(false); // discontinue and get out
+				}
+			}
+			return(true);
+		});
+
+		Clasz latestClasz = (Clasz) lambdaObject.getTheObject();
+		if (latestClasz != null) {
+			this.getFieldObjectBox(aBoxName).removeAll();
+			this.getFieldObjectBox(aBoxName).addValueObject(latestClasz);
+		}
+	}
 
 	public void copyValue(Clasz aSource) throws Exception {
 		for(Field eachField : aSource.getRecord().getFieldBox().values()) {
@@ -2993,7 +3048,7 @@ public class Clasz extends Table implements Comparable {
 		recWhere.getField(fieldName.getFieldName()).setValueStr(fieldName.getValueStr());
 	}
 
-	public static String GetWherePermutation(List<String> aEachCondition, int aPosition2UniqueIt, List<Field> aBindList, List<Field> aPermutedBindList) throws Exception {
+	private static String GetWherePermutation(List<String> aEachCondition, int aPosition2UniqueIt, List<Field> aBindList, List<Field> aPermutedBindList) throws Exception {
 		String uniqueableExpression = "";
 		for (int cntr = 0; cntr < aEachCondition.size(); cntr++) {
 			String newWhereSection = aEachCondition.get(cntr);
@@ -3010,7 +3065,17 @@ public class Clasz extends Table implements Comparable {
 		return(uniqueableExpression);
 	}
 
-	public static FetchStatus FetchByPageFromTable(Connection aConn, Clasz aClasz, List<String> aKeyField, List<String> aKeyValue, List<SortOrder> aKeyOrder, Record aWhere, FieldObjectBox aBox, String aPageDirection, int aPageSize) throws Exception {
+	public static FetchStatus FetchBySection(Connection aConn, Class aParentClass, List<String> aKeyField, List<String> aKeyValue, SortOrder aSortOrder, Record aWhere, FieldObjectBox aBox, int aPageSize) throws Exception {
+		List<SortOrder> orderList = new CopyOnWriteArrayList<>();
+		for(int cntr = 0; cntr < aKeyField.size(); cntr++) {
+			orderList.add(aSortOrder);
+		}
+
+		return (Clasz.FetchByPageFromTable(aConn, aParentClass, aKeyField, aKeyValue, orderList, aWhere, aBox, "next", aPageSize));
+	}
+
+	// replace the name to FetchBySection after removing the deprecated one
+	public static FetchStatus FetchByPageFromTable(Connection aConn, Class aParentClass, List<String> aKeyField, List<String> aKeyValue, List<SortOrder> aKeyOrder, Record aWhere, FieldObjectBox aBox, String aPageDirection, int aPageSize) throws Exception {
 		int result = 0;
 		FetchStatus fetchStatus;
 
@@ -3024,7 +3089,8 @@ public class Clasz extends Table implements Comparable {
 		List<String> fieldExpressionList = new CopyOnWriteArrayList<>();
 		List<String> sortFieldList = new CopyOnWriteArrayList<>();
 		List<Field> fieldBindList = new CopyOnWriteArrayList<>();
-		String tableName = aClasz.getTableName();
+		//String tableName = aClasz.getTableName();
+		String tableName = Clasz.CreateTableName(aParentClass);
 		Table claszTable = new Table(tableName);
 		claszTable.initMeta(aConn);
 		for(int cntrField = 0; cntrField < aKeyField.size(); cntrField++) {
@@ -3126,7 +3192,7 @@ App.logDebg(Clasz.class, "Clasz.FetchPageFromTable: " + stmt);
 	 * This differs from the one in FieldObjectBox.GetEachFieldExpression, 
 	 * as this is fetching directly from the table without objectindex.
 	*/
-	public static List<Object> GetEachFieldExpression(Table aClaszTable, String aFieldName, String aFieldValue, SortOrder aDisplayOrder, String aPageDirection) throws Exception {
+	private static List<Object> GetEachFieldExpression(Table aClaszTable, String aFieldName, String aFieldValue, SortOrder aDisplayOrder, String aPageDirection) throws Exception {
 		if (aDisplayOrder == SortOrder.DSC) {
 			if (aPageDirection.equals("next")) { // reverse the direction if display by descending order
 				aPageDirection = "prev";

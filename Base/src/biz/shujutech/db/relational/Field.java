@@ -6,7 +6,6 @@ import biz.shujutech.base.Connection;
 import biz.shujutech.base.Hinderance;
 import biz.shujutech.db.object.Clasz;
 import biz.shujutech.db.object.FieldHtml;
-import biz.shujutech.db.object.FieldObject;
 import biz.shujutech.db.object.FieldObjectBox;
 import biz.shujutech.db.object.ObjectBase;
 import biz.shujutech.reflect.AttribIndex;
@@ -24,7 +23,7 @@ public class Field extends Base implements Comparable {
 	// information on how to display this field in GUI
 	private String displayName = ""; // the label name for this field in ui
 	private boolean forDisplay = true; // set to true, so ui will display this field
-	private boolean forRemove = true; // set to true, so ui will display this field
+	private boolean forRemove = true; // set to true, so it'll be remove by default and json sent to ui is without this field, unless explicity set t false
 	private boolean flatten = false;
 	private int displayPosition;
 
