@@ -3,8 +3,11 @@ package biz.shujutech.util;
 import static biz.shujutech.base.App.ERROR_COMPLAIN;
 import biz.shujutech.base.Hinderance;
 import biz.shujutech.db.object.Clasz;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.net.URI;
 import java.util.Random;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -320,5 +323,73 @@ public class Generic {
 		String path = uri.getPath();
 		String leafName = path.substring(path.lastIndexOf('/') + 1);
 		return(leafName);
+	}
+
+	public static File FindFileOnClassPath(final String fileName) {
+		File result = null;
+		final String classpath = System.getProperty("java.class.path");
+		final String pathSeparator = System.getProperty("path.separator");
+		final StringTokenizer tokenizer = new StringTokenizer(classpath, pathSeparator);
+	 
+		while (tokenizer.hasMoreTokens()) {
+			final String pathElement = tokenizer.nextToken();
+			final File directoryOrJar = new File(pathElement);
+			final File absoluteDirectoryOrJar = directoryOrJar.getAbsoluteFile();
+
+			result = GetFileFromPath(directoryOrJar, absoluteDirectoryOrJar, fileName);
+			if (result != null) break;
+			if (result == null && absoluteDirectoryOrJar.isFile() == false) {
+				result = FindFileInSubDirectory(absoluteDirectoryOrJar.getAbsolutePath(), fileName);
+				if (result != null) break;
+			}
+		}
+		return result;
+	}
+
+	public static File FindFileInSubDirectory(final String directoryName, final String fileName) {
+		File result = new File(directoryName + File.separator + fileName);
+		if (result != null && result.isFile()) {
+			return result;
+		} else  {
+			result = null;
+		}
+
+		File file = new File(directoryName);
+		String[] directories = file.list(new FilenameFilter() {
+			@Override
+			public boolean accept(File current, String name) {
+				return new File(current, name).isDirectory();
+			}
+		});
+
+		if (directories != null) {
+			for(String eachDirName : directories) {
+				final File directoryOrFile = new File(eachDirName);
+				final File absoluteDirectoryOrFile = new File(directoryName + File.separator + eachDirName);
+				result = GetFileFromPath(directoryOrFile, absoluteDirectoryOrFile, fileName);
+				if (result != null) break;
+				result = FindFileInSubDirectory(absoluteDirectoryOrFile.getAbsolutePath(), fileName);
+				if (result != null) break;
+			}
+		} else {
+
+		}
+		return(result);
+	}
+
+	private static File GetFileFromPath(File directoryOrJar, File absoluteDirectoryOrJar, String fileName) {
+		//System.out.println("ZZZ: " + absoluteDirectoryOrJar.getPath());
+		if (absoluteDirectoryOrJar.isFile()) {
+			final File target = new File(absoluteDirectoryOrJar.getParent(), fileName);
+				if (target.exists()) {
+					return target;
+				}
+		} else {
+				final File target = new File(directoryOrJar, fileName);
+				if (target.exists()) {
+					return target;
+				}
+		}
+		return(null);
 	}
 }

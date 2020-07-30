@@ -10,6 +10,7 @@
 package biz.shujutech.base;
 
 import biz.shujutech.util.CryptoRsa;
+import biz.shujutech.util.Generic;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -148,7 +149,17 @@ public class App {
 		}
 
 		// print the following compulsory to console
-		String propFullName = GetPropFullName(aPropsFile);
+		File propFile = Generic.FindFileOnClassPath(aPropsFile);
+		if (propFile != null) {
+			String fullFileNameWithPath = propFile.getAbsolutePath();
+			App.logInfo("Found property file at: " + fullFileNameWithPath);
+		} else {
+			App.logEror("Fail to locate properties file: " + aPropsFile);
+			return;
+		}
+
+		//String propFullName = GetPropFullName(aPropsFile);
+		String propFullName = propFile.getAbsolutePath();
 		String logFullName = GetLogFullName(App.PropRawLogName);
 		App.logInfo("Log file is at: " + logFullName);
 		App.logInfo("Configuration is from: " + propFullName);
