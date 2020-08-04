@@ -84,8 +84,8 @@ public class App {
 	public static final String PATH_DOCROOT = GetDocRoot(PATH_JAR);
 	public static final String PATH_HTML = PATH_DOCROOT;
 	public static final String PATH_WEBINF = PATH_DOCROOT + File.separator + "WEB-INF";
-	public static String LogPath = PATH_WEBINF + File.separator +  "log";
-	public static String ConfigPath = PATH_WEBINF + File.separator + "config";
+	public static String LogPathWebInf = PATH_WEBINF + File.separator +  "log";
+	public static String ConfigPathWebInf = PATH_WEBINF + File.separator + "config";
 
 	public static boolean AlreadySetup = false;
 	public static int MAX_GET_CONNECTION_ATTEMPT = 3;
@@ -138,32 +138,23 @@ public class App {
 		}	
 	}
 
+	public static File FindFileOnWebInf(String aFileName) throws Exception {
+		File result = Generic.FindFileInSubDirectory(PATH_WEBINF, aFileName);
+		if (result.exists()) {
+			return(result);
+		} else {
+			return(null);
+		}
+	}
+
 	public static void Setup(int aThreadId, String aPropsFile, boolean aOnlyConsoleLog) throws Exception {
 		if (App.AlreadySetup) return;
 
-		if (PATH_WEBINF.contains("WEB-INF") == false) {
-			LogPath = System.getProperty("user.dir")+ File.separator +  "log";
-			ConfigPath = System.getProperty("user.dir") + File.separator + "config";
-			MakeDir(LogPath);
-			MakeDir(ConfigPath);
-		}
-
 		// print the following compulsory to console
-		File propFile = Generic.FindFileOnClassPath(aPropsFile);
-		if (propFile != null) {
-			String fullFileNameWithPath = propFile.getAbsolutePath();
-			App.logInfo("Found property file at: " + fullFileNameWithPath);
-		} else {
-			App.logEror("Fail to locate properties file: " + aPropsFile);
-			return;
-		}
-
-		//String propFullName = GetPropFullName(aPropsFile);
-		String propFullName = propFile.getAbsolutePath();
-		String logFullName = GetLogFullName(App.PropRawLogName);
-		App.logInfo("Log file is at: " + logFullName);
+		String propFullName = GetPropFullName(aPropsFile);
 		App.logInfo("Configuration is from: " + propFullName);
 		App.logInfo("Working directory: " + System.getProperty("user.dir"));
+		App.logInfo("If log path is not specify, it will be defaulted to: " + System.getProperty("java.io.tmpdir"));
 		App.logInfo("Java classpath: " + System.getProperty("java.class.path"));
 
 		if (App.CustomLogFormatter == null) {
@@ -188,19 +179,13 @@ public class App {
 			File propsFile = new File(propFullName);
 			if (propsFile.exists() == false) { // if no property file, create one
 				System.out.println("Fail to locate property file: " + propFullName + ", creating it....");
-				int createFile = 'Y';
-				if (createFile == 'Y' || createFile == 'y') {
-					try {
-						propsFile.createNewFile();
-					} catch (IOException ex) {
-						throw new Hinderance(ex, "Fail to create property file: " + propFullName);
-					}
-				} else {
-					System.exit(1);
+				try {
+					propsFile.createNewFile();
+				} catch (IOException ex) {
+					throw new Hinderance(ex, "Fail to create property file: " + propFullName);
 				}
 			}
 			propsInStream = new FileInputStream(propFullName);
-
 			AppProps = new Properties();
 			AppProps.load(propsInStream);
 		}
@@ -329,10 +314,19 @@ public class App {
 	}
 
 	public static String GetLogFullName(String aFileName) {
-		String logPath = aFileName;
+		String logPath;
 		File logFile = new File(App.PropRawLogName);
-		if (logFile.getParent() == null) {
-			logPath = Paths.get(App.LogPath, aFileName).toString();
+		if (aFileName.startsWith("WEB-INF")) {
+			MakeDir(App.LogPathWebInf);
+			String[] fileName = aFileName.split(":");
+			logPath = Paths.get(App.LogPathWebInf, fileName[1]).toString();
+		} else {
+			if (logFile.getParent() == null) {
+				String tmpDir = System.getProperty("java.io.tmpdir");
+				logPath = tmpDir + File.separator + aFileName;
+			} else {
+				logPath = aFileName;
+			}
 		}
 		return(logPath);
 	}
@@ -342,13 +336,39 @@ public class App {
 		return(App.PropMaxThread);
 	}
 
-	public static String GetPropFullName(String aFileName) {
+	public static String GetPropFullName(String aPropsFile) throws Exception {
+		File propFile = Generic.FindFileAtUserDir(aPropsFile);
+		if (propFile == null) {
+			App.logInfo("Property file: " + aPropsFile + ", is not in working directory: " + System.getProperty("user.dir"));
+			propFile = FindFileOnWebInf(aPropsFile);
+			if (propFile == null) {
+				App.logInfo("Property file: " + aPropsFile + ", is not in WEB-INF: " + PATH_WEBINF);
+				propFile = Generic.FindFileOnClassPath(aPropsFile);
+				if (propFile == null) {
+					App.logInfo("Property file: " + aPropsFile + ", is not in any classpath sub-directories: " + System.getProperty("java.class.path"));
+					throw new Hinderance("Fail to locate property file: " + aPropsFile);
+				} 
+			}
+		} 
+		App.logInfo("Found property file at: " + propFile.getAbsolutePath());
+		return(propFile.getAbsolutePath());
+
+		/*
+		if (propFile != null) {
+			String fullFileNameWithPath = propFile.getAbsolutePath();
+			App.logInfo("Found property file at: " + fullFileNameWithPath);
+		} else {
+			App.logEror("Fail to locate property file: " + aPropsFile);
+			return;
+		}
+
 		String configPath = aFileName; 
 		File configFile = new File(aFileName);
 		if (configFile.getParent() == null) {
 			configPath = Paths.get(App.ConfigPath, aFileName).toString();
 		}
 		return(configPath);
+		*/
 	}
 
 	public static void OpenLogFile() throws Exception {
@@ -1002,8 +1022,8 @@ public class App {
 
 	public static void main(String[] args) {
 		String tempDir = System.getProperty("java.io.tmpdir");
-		App.ConfigPath = tempDir;
-		App.LogPath = tempDir;
+		App.ConfigPathWebInf = tempDir;
+		App.LogPathWebInf = tempDir;
 
 		// this demonstrate App can be call from other external class, the external class is "Simple"
 		try {

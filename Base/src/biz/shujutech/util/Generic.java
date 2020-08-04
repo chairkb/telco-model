@@ -1,5 +1,6 @@
 package biz.shujutech.util;
 
+
 import static biz.shujutech.base.App.ERROR_COMPLAIN;
 import biz.shujutech.base.Hinderance;
 import biz.shujutech.db.object.Clasz;
@@ -10,6 +11,7 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public class Generic {
 	 /**
@@ -325,6 +327,17 @@ public class Generic {
 		return(leafName);
 	}
 
+	public static File FindFileAtUserDir(final String fileName) {
+		String userDir = System.getProperty("user.dir");
+		String fileNameWithPath = userDir + File.separator + fileName;
+		File result = new File(fileNameWithPath);
+		if (result.exists()) {
+			return(result);
+		} else {
+			return(null);
+		}
+	}
+
 	public static File FindFileOnClassPath(final String fileName) {
 		File result = null;
 		final String classpath = System.getProperty("java.class.path");
@@ -348,19 +361,14 @@ public class Generic {
 
 	public static File FindFileInSubDirectory(final String directoryName, final String fileName) {
 		File result = new File(directoryName + File.separator + fileName);
-		if (result != null && result.isFile()) {
+		if (result.isFile()) {
 			return result;
 		} else  {
 			result = null;
 		}
 
 		File file = new File(directoryName);
-		String[] directories = file.list(new FilenameFilter() {
-			@Override
-			public boolean accept(File current, String name) {
-				return new File(current, name).isDirectory();
-			}
-		});
+		String[] directories = file.list((File current, String name) -> new File(current, name).isDirectory());
 
 		if (directories != null) {
 			for(String eachDirName : directories) {
@@ -392,4 +400,5 @@ public class Generic {
 		}
 		return(null);
 	}
+
 }
