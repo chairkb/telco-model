@@ -10,8 +10,13 @@
             <file>file:/home/fredie/git/StApp/Base/src/biz/shujutech/db/object/FieldObjectBox.java</file>
         </group>
         <group name="Shujutech">
-		<file>file:/home/fredie/git/StApp/Base/src/biz/shujutech/db/object/Clasz.java</file>
+            <file>file:/home/fredie/git/StApp/Base/src/biz/shujutech/db/object/Clasz.java</file>
         </group>
         <group/>
+        <group name="PCCW">
+            <file>file:/home/fredie/Pccw/netbeans/telco-model/Base/src/biz/shujutech/base/App.java</file>
+            <file>file:/home/fredie/Pccw/netbeans/telco-model/Base/src/biz/shujutech/db/relational/Database.java</file>
+            <file>file:/home/fredie/Pccw/netbeans/telco-model/Base/src/biz/shujutech/base/ConnectionPool.java</file>
+        </group>
     </open-files>
 </project-private>

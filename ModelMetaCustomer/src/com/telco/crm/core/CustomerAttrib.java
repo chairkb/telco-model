@@ -54,7 +54,7 @@ public class CustomerAttrib extends Clasz {
 	}
 
 	//public static final String PROPERTY_LOCATION_APP = "C:\\Users\\User8\\github\\telco-model\\Model\\src\\com\\telco\\crm\\config\\telco.properties";
-	public static final String PROPERTY_LOCATION_APP = "dev.properties";
+	public static final String PROPERTY_LOCATION_APP = "modeller.properties";
 	public static void main(String[] args) throws Exception {
 		ObjectBase objectDb = new ObjectBase();
 		Connection conn = null;

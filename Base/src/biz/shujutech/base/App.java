@@ -140,7 +140,7 @@ public class App {
 
 	public static File FindFileOnWebInf(String aFileName) throws Exception {
 		File result = Generic.FindFileInSubDirectory(PATH_WEBINF, aFileName);
-		if (result.exists()) {
+		if (result != null && result.exists()) {
 			return(result);
 		} else {
 			return(null);
